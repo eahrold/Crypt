@@ -16,6 +16,7 @@ from PyObjCTools import AppHelper
 
 # import modules containing classes required to start application and load MainMenu.nib
 import FVAppDelegate
+import FVController
 
 # pass control to AppKit
 AppHelper.runEventLoop()

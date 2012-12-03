@@ -11,5 +11,9 @@ from Foundation import *
 from AppKit import *
 
 class FVAppDelegate(NSObject):
-    def applicationDidFinishLaunching_(self, sender):
-        NSLog("Application did finish launching.")
+    def applicationWillFinishLaunching_(self, sender):
+        # don't show menu bar
+        NSMenu.setMenuBarVisible_(NO)
+                
+        def applicationDidFinishLaunching_(self, sender):
+            NSLog(u"FV Server finished launching.")
