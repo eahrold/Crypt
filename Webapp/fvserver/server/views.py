@@ -7,6 +7,7 @@ from django.http import HttpResponse, Http404
 from django.contrib.auth.models import Permission, User
 from django.conf import settings
 from django.shortcuts import render_to_response
+from datetime import datetime
 # Create your views here.
 
 ##index view
