@@ -1,3 +1,6 @@
 .DS_Store
 Build/Filevault Server.app
 Build/FileVault_Client.pkg
+Webapp/fvserver/fvserver/settings.py
+*.pyc
+Webapp/fvserver/fvserver.db

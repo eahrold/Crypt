@@ -74,6 +74,7 @@ class FVController(NSObject):
                         print 'The server couldn\'t fulfill the request'
                         print 'Error code: ', e.code
                         sys.exit(e.code)
+						##need some code to read in the json response from the server, and if the deta matches, display success message, or failiure message, then reboot
 
                                 
         NSLog(u"username: %s" % username_value)
