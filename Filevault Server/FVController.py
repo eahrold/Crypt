@@ -15,7 +15,9 @@ import subprocess
 import sys
 import re
 import FVUtils
-import urllbib
+import urllib
+import plistlib
+import re
 from urllib2 import Request, urlopen, URLError, HTTPError
 
 
@@ -31,7 +33,9 @@ class FVController(NSObject):
     @objc.IBAction
     def encrypt_(self,sender):
         fvprefspath = "/Library/Preferences/FVServer.plist"
-        
+        the_command = "ioreg -c \"IOPlatformExpertDevice\" | awk -F '\"' '/IOPlatformSerialNumber/ {print $4}'"
+        serial = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+        serial = re.sub(r'\s', '', serial)
         if not os.path.exists(fvprefspath):
             self.errorField.setStringValue_("Preferences Missing")
             self.userName.setEnabled_(False)
@@ -57,9 +61,11 @@ class FVController(NSObject):
             #time to turn on filevault
             the_command = "/usr/local/bin/csfde "+FVUtils.GetRootDisk()+" "+username_value+" "+password_value
             fv_status = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+            fv_status = plistlib.readPlistFromString(fv_status)
+            NSLog(u"csfde results: %s" % fv_status)
             if fv_status['error'] == False:
                 ##submit this to the server fv_status['recovery_password']
-                theurl = fvprefs['ServerURL']
+                theurl = fvprefs['ServerURL']+"/checkin/"
                 mydata=[('serial',serial),('recovery_password',fv_status['recovery_password'])]
                 mydata=urllib.urlencode(mydata)
                 req = Request(theurl, mydata)
@@ -74,11 +80,10 @@ class FVController(NSObject):
                         print 'The server couldn\'t fulfill the request'
                         print 'Error code: ', e.code
                         sys.exit(e.code)
-						##need some code to read in the json response from the server, and if the deta matches, display success message, or failiure message, then reboot
-
-                                
-        NSLog(u"username: %s" % username_value)
-        NSLog(u"Password: %s" % password_value)
-        NSLog(u"Root Disk: %s" % FVUtils.GetRootDisk())
-        NSLog(u"FV Prefs: %s" % fvprefs)
-        NSLog(u"FV Status: %s" % fv_status)
+    
+                else:
+                    ##need some code to read in the json response from the server, and if the deta matches, display success message, or failiure message, then reboot. If not, we need to cache it on disk somewhere - maybe pull it out with facter?
+                    #time to turn on filevault
+                    NSLog(u"%s" % fvprefs['ServerURL'])
+                    the_command = "/sbin/reboot"
+                    reboot = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]

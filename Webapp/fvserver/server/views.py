@@ -28,25 +28,6 @@ def checkin(request):
         recovery_pass = request.POST['recovery_password']
     except:
         raise Http404
-    try:
-        #try to find the computer
-        computer = get_object_or_404(Computer, serial__iexact=serial_num)
-    except:
-        ##we couldn't find the computer, get it's subnet out of the passed ip
-        subnet = ip.rpartition('.')[0] + ".0"
-        ##find if there are any subnets with this IP address
-        try:
-            network = get_object_or_404(Network, network=subnet)
-        except:
-            raise Http404
-        ##get the next name of from the group - if it's not blank carry on
-        new_name = next_name(network.computergroup)
-        if new_name == "":
-            raise Http404
-        else:
-            ##if there are, create a new computer in that group with the serial
-            computer = Computer(name=new_name, serial=serial_num, computergroup=network.computergroup)
-            computer.save()
     computer = Computer(recovery_key=recovery_pass, serial=serial_num, last_checkin = datetime.now())
     computer.save()
     
