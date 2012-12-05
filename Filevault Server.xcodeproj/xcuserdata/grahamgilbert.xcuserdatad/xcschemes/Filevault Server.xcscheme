@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FC54DB641646E4FE00737F94"
-               BuildableName = "Filevault Server.app"
-               BlueprintName = "Filevault Server"
+               BuildableName = "FileVault.app"
+               BlueprintName = "FileVault"
                ReferencedContainer = "container:Filevault Server.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FC54DB641646E4FE00737F94"
-            BuildableName = "Filevault Server.app"
-            BlueprintName = "Filevault Server"
+            BuildableName = "FileVault.app"
+            BlueprintName = "FileVault"
             ReferencedContainer = "container:Filevault Server.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -52,8 +52,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FC54DB641646E4FE00737F94"
-            BuildableName = "Filevault Server.app"
-            BlueprintName = "Filevault Server"
+            BuildableName = "FileVault.app"
+            BlueprintName = "FileVault"
             ReferencedContainer = "container:Filevault Server.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -70,8 +70,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FC54DB641646E4FE00737F94"
-            BuildableName = "Filevault Server.app"
-            BlueprintName = "Filevault Server"
+            BuildableName = "FileVault.app"
+            BlueprintName = "FileVault"
             ReferencedContainer = "container:Filevault Server.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

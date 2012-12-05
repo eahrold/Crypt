@@ -1,0 +1,18 @@
+#FileVault Server
+FileVault Server is a system for centrally storing FilveVault 2 recovery keys. It is made up of a client app, and a Django web app for storing the keys.
+
+##Client
+The client is written in Pyobjc, and makes use of Google's csfde from Cauliflower Vest to handle the actual encryption. An example login hook is (will) be provided to see how this could be implemented in your organisation.
+
+###Todo
+- Preferences from mcx as well
+- Output to the window from csfde
+- Store the output to disk in case of failiure to escrow
+- Facter facts for encryption enabled and if escrow failed
+- Logging!
+
+###Configuration
+Write the plist
+
+##Web app
+###Installation instructions

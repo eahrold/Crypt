@@ -122,9 +122,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FC54DB641646E4FE00737F94 /* Filevault Server */ = {
+		FC54DB641646E4FE00737F94 /* FileVault */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FC54DB861646E4FE00737F94 /* Build configuration list for PBXNativeTarget "Filevault Server" */;
+			buildConfigurationList = FC54DB861646E4FE00737F94 /* Build configuration list for PBXNativeTarget "FileVault" */;
 			buildPhases = (
 				FC54DB611646E4FE00737F94 /* Sources */,
 				FC54DB621646E4FE00737F94 /* Frameworks */,
@@ -134,7 +134,7 @@
 			);
 			dependencies = (
 			);
-			name = "Filevault Server";
+			name = FileVault;
 			productName = "Filevault Server";
 			productReference = FC54DB651646E4FE00737F94 /* Filevault Server.app */;
 			productType = "com.apple.product-type.application";
@@ -161,7 +161,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FC54DB641646E4FE00737F94 /* Filevault Server */,
+				FC54DB641646E4FE00737F94 /* FileVault */,
 			);
 		};
 /* End PBXProject section */
@@ -311,7 +311,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FC54DB861646E4FE00737F94 /* Build configuration list for PBXNativeTarget "Filevault Server" */ = {
+		FC54DB861646E4FE00737F94 /* Build configuration list for PBXNativeTarget "FileVault" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FC54DB871646E4FE00737F94 /* Debug */,

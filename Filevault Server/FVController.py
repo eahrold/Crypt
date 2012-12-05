@@ -4,8 +4,21 @@
 #  Filevault Server
 #
 #  Created by Graham Gilbert on 03/12/2012.
-#  Copyright (c) 2012 Graham Gilbert. All rights reserved.
 #
+#
+# Copyright 2012 Graham Gilbert.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 import objc
 import FoundationPlist
@@ -29,20 +42,29 @@ class FVController(NSObject):
     password = objc.IBOutlet()
     encryptButton = objc.IBOutlet()
     errorField = objc.IBOutlet()
-
+    window = objc.IBOutlet()
+    
+    def startRun(self):
+        if self.window:
+            self.window.setCanBecomeVisibleWithoutLogin_(True)
+            self.window.setLevel_(NSScreenSaverWindowLevel - 1)
+            self.window.center()
+    
     @objc.IBAction
     def encrypt_(self,sender):
         fvprefspath = "/Library/Preferences/FVServer.plist"
         the_command = "ioreg -c \"IOPlatformExpertDevice\" | awk -F '\"' '/IOPlatformSerialNumber/ {print $4}'"
         serial = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
         serial = re.sub(r'\s', '', serial)
-        if not os.path.exists(fvprefspath):
-            self.errorField.setStringValue_("Preferences Missing")
-            self.userName.setEnabled_(False)
-            self.password.setEnabled_(False)
-            self.encryptButton.setEnabled_(False)
-        fvprefs = FoundationPlist.readPlist(fvprefspath)
-        if fvprefs['ServerURL'] == "":
+        #if not os.path.exists(fvprefspath):
+        #    self.errorField.setStringValue_("Preferences Missing")
+        #    self.userName.setEnabled_(False)
+        #    self.password.setEnabled_(False)
+        #    self.encryptButton.setEnabled_(False)
+        #fvprefs = FoundationPlist.readPlist(fvprefspath)
+        serverURL = FVUtils.pref("ServerURL")
+        NSLog(u"%s" % serverURL)
+        if serverURL == "":
             self.errorField.setStringValue_("ServerURL isn't configured")
             self.userName.setEnabled_(False)
             self.password.setEnabled_(False)
@@ -58,6 +80,9 @@ class FVController(NSObject):
             self.password.setEnabled_(True)
             self.encryptButton.setEnabled_(True)
         if username_value != "" and password_value !="":
+            self.userName.setEnabled_(False)
+            self.password.setEnabled_(False)
+            self.encryptButton.setEnabled_(False)
             #time to turn on filevault
             the_command = "/usr/local/bin/csfde "+FVUtils.GetRootDisk()+" "+username_value+" "+password_value
             fv_status = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
@@ -65,7 +90,7 @@ class FVController(NSObject):
             NSLog(u"csfde results: %s" % fv_status)
             if fv_status['error'] == False:
                 ##submit this to the server fv_status['recovery_password']
-                theurl = fvprefs['ServerURL']+"/checkin/"
+                theurl = serverURL+"/checkin/"
                 mydata=[('serial',serial),('recovery_password',fv_status['recovery_password'])]
                 mydata=urllib.urlencode(mydata)
                 req = Request(theurl, mydata)
@@ -75,15 +100,15 @@ class FVController(NSObject):
                     if hasattr(e, 'reason'):
                         print 'We failed to reach a server.'
                         print 'Reason: ', e.reason
-                        sys.exit(e.reason)
+                        NSApp.terminate_(self)
                     elif hasattr(e, 'code'):
                         print 'The server couldn\'t fulfill the request'
                         print 'Error code: ', e.code
-                        sys.exit(e.code)
+                        NSApp.terminate_(self)
     
                 else:
                     ##need some code to read in the json response from the server, and if the deta matches, display success message, or failiure message, then reboot. If not, we need to cache it on disk somewhere - maybe pull it out with facter?
                     #time to turn on filevault
-                    NSLog(u"%s" % fvprefs['ServerURL'])
+                    #NSLog(u"%s" % fvprefs['ServerURL'])
                     the_command = "/sbin/reboot"
                     reboot = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]

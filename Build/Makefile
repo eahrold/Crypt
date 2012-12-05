@@ -14,6 +14,6 @@ pack-csfde: l_usr_local_bin
 		
 pack-fvserver: l_usr_local
 		@sudo mkdir -p ${WORK_D}/usr/local/fvserver
-		@sudo ${CP} -R "FileVault Server.app" ${WORK_D}/usr/local/fvserver/"FileVault Server.app"
-		@sudo chown root:wheel ${WORK_D}/usr/local/fvserver/"FileVault Server.app"
-		@sudo chmod 755 ${WORK_D}/usr/local/fvserver/"FileVault Server.app"
+		@sudo ${CP} -R "FileVault.app" ${WORK_D}/usr/local/fvserver/"FileVault.app"
+		@sudo chown root:wheel ${WORK_D}/usr/local/fvserver/"FileVault.app"
+		@sudo chmod 755 ${WORK_D}/usr/local/fvserver/"FileVault.app"
