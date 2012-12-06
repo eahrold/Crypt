@@ -7,6 +7,7 @@ The client is written in Pyobjc, and makes use of Google's csfde from Cauliflowe
 ###Todo
 - Preferences from mcx as well
 - Output to the window from csfde
+- Use fdesetup on 10.8
 - Store the output to disk in case of failiure to escrow
 - Facter facts for encryption enabled and if escrow failed
 - Logging!

@@ -35,9 +35,6 @@ from urllib2 import Request, urlopen, URLError, HTTPError
 
 
 class FVController(NSObject):
-    #if filevaultenabled:
-    #    sys.exit("\nFileVault is already enabled\n")
-    #get the server url from the plist - if its not present, disable everything in the ui and display an error
     userName = objc.IBOutlet()
     password = objc.IBOutlet()
     encryptButton = objc.IBOutlet()
@@ -56,12 +53,6 @@ class FVController(NSObject):
         the_command = "ioreg -c \"IOPlatformExpertDevice\" | awk -F '\"' '/IOPlatformSerialNumber/ {print $4}'"
         serial = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
         serial = re.sub(r'\s', '', serial)
-        #if not os.path.exists(fvprefspath):
-        #    self.errorField.setStringValue_("Preferences Missing")
-        #    self.userName.setEnabled_(False)
-        #    self.password.setEnabled_(False)
-        #    self.encryptButton.setEnabled_(False)
-        #fvprefs = FoundationPlist.readPlist(fvprefspath)
         serverURL = FVUtils.pref("ServerURL")
         NSLog(u"%s" % serverURL)
         if serverURL == "":
@@ -74,20 +65,24 @@ class FVController(NSObject):
         self.userName.setEnabled_(False)
         self.password.setEnabled_(False)
         self.encryptButton.setEnabled_(False)
+    
         if username_value == "" or password_value == "":
             self.errorField.setStringValue_("You need to enter your username and password")
             self.userName.setEnabled_(True)
             self.password.setEnabled_(True)
             self.encryptButton.setEnabled_(True)
+
         if username_value != "" and password_value !="":
             self.userName.setEnabled_(False)
             self.password.setEnabled_(False)
             self.encryptButton.setEnabled_(False)
             #time to turn on filevault
+            # we need to see if fdesetup is available, might as well use the built in methods in 10.8
             the_command = "/usr/local/bin/csfde "+FVUtils.GetRootDisk()+" "+username_value+" "+password_value
-            fv_status = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
-            fv_status = plistlib.readPlistFromString(fv_status)
-            NSLog(u"csfde results: %s" % fv_status)
+            proc = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+            fv_status = plistlib.readPlistFromString(proc)
+            #NSLog(u"csfde results: %s" % fv_status)
+            
             if fv_status['error'] == False:
                 ##submit this to the server fv_status['recovery_password']
                 theurl = serverURL+"/checkin/"
