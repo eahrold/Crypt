@@ -20,8 +20,11 @@
 # limitations under the License.
 
 import re
+import os
+import plistlib
 import subprocess
-from Foundation import CFPreferencesCopyAppValue, NSDate
+from Foundation import *
+import urllib2
 
 # our preferences "bundle_id"
 BUNDLE_ID = 'FVServer'
@@ -46,7 +49,7 @@ def GetRootDisk():
         the_command = '/sbin/mount'
         stdout = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
     except:
-        NSLog("Crap, something went wrong")
+        NSLog(u"Crap, something went wrong")
     
     for line in stdout.splitlines():
         try:
@@ -81,7 +84,7 @@ def pref(pref_name):
         - default_prefs defined here.
     """
     default_prefs = {
-        'ServerURL': 'http://fvserver',
+        'ServerURL': 'http://crypt',
     }
     pref_value = CFPreferencesCopyAppValue(pref_name, BUNDLE_ID)
     if pref_value == None:
@@ -94,3 +97,41 @@ def pref(pref_name):
         # convert NSDate/CFDates to strings
         pref_value = str(pref_value)
     return pref_value
+
+def encryptDrive(password,username):
+    #time to turn on filevault
+    # we need to see if fdesetup is available, might as well use the built in methods in 10.8
+    if os.path.exists('/usr/bin/fdesetup'):
+        ##build plist
+        the_settings = {}
+        the_error = ""
+        fv_status = ""
+        the_settings['Username'] = username
+        the_settings['Password'] = password
+        input_plist = plistlib.writePlistToString(the_settings)
+        try:
+            p = subprocess.Popen(['/usr/bin/fdesetup','enable','-outputplist', '-inputplist'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout_data = p.communicate(input=input_plist)[0]
+            NSLog(u"%s" % stdout_data)
+            fv_status = plistlib.readPlistFromString(stdout_data)
+            return fv_status['RecoveryKey'], the_error
+        except:
+            return fv_status, "Couldn't enable FileVault"
+            
+    else:
+        try:
+            the_command = "/usr/local/bin/csfde "+FVUtils.GetRootDisk()+" "+username+" "+password
+            proc = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+            fv_status = plistlib.readPlistFromString(proc)
+            return fv_status['recovery_password']
+        except:
+            return fv_status, "Couldn't enable FilveVault"
+
+def internet_on():
+    try:
+        response=urllib2.urlopen(pref('ServerURL'),timeout=1)
+        NSLog(u"Server is accessible")
+        return True
+    except urllib2.URLError as err: pass
+    NSLog(u"Server is not accessible")
+    return False

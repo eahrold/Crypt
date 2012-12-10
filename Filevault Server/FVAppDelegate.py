@@ -21,6 +21,7 @@
 
 
 from Foundation import *
+import FVUtils
 from AppKit import *
 
 class FVAppDelegate(NSObject):
@@ -29,4 +30,8 @@ class FVAppDelegate(NSObject):
         NSMenu.setMenuBarVisible_(NO)
                 
     def applicationDidFinishLaunching_(self, sender):
-        pass
+        # Prevent automatic relaunching at login on Lion
+        if NSApp.respondsToSelector_('disableRelaunchOnLogin'):
+            NSApp.disableRelaunchOnLogin()
+        if not FVUtils.internet_on():
+            NSApp.terminate_(self)

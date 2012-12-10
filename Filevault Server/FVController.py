@@ -24,6 +24,8 @@ import objc
 import FoundationPlist
 import os
 from Foundation import *
+from AppKit import *
+from Cocoa import *
 import subprocess
 import sys
 import re
@@ -41,19 +43,13 @@ class FVController(NSObject):
     errorField = objc.IBOutlet()
     window = objc.IBOutlet()
     
-    def encryptDrive(self,password,username):
-        #time to turn on filevault
-        # we need to see if fdesetup is available, might as well use the built in methods in 10.8
-        the_command = "/usr/local/bin/csfde "+FVUtils.GetRootDisk()+" "+username+" "+password
-        proc = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
-        fv_status = plistlib.readPlistFromString(proc)
-        return fv_status['recovery_password']
     
     def startRun(self):
         if self.window:
             self.window.setCanBecomeVisibleWithoutLogin_(True)
             self.window.setLevel_(NSScreenSaverWindowLevel - 1)
             self.window.center()
+    
     
     @objc.IBAction
     def encrypt_(self,sender):
@@ -73,6 +69,11 @@ class FVController(NSObject):
         self.userName.setEnabled_(False)
         self.password.setEnabled_(False)
         self.encryptButton.setEnabled_(False)
+        
+        def enable_inputs(self):
+            self.userName.setEnabled_(True)
+            self.password.setEnabled_(True)
+            self.encryptButton.setEnabled_(True)
     
         if username_value == "" or password_value == "":
             self.errorField.setStringValue_("You need to enter your username and password")
@@ -86,8 +87,17 @@ class FVController(NSObject):
             self.encryptButton.setEnabled_(False)
             
             #NSLog(u"csfde results: %s" % fv_status)
-            recovery_key = encryptDrive(password_value, username_value)
-            if fv_status['error'] == False:
+            recovery_key, encrypt_error = FVUtils.encryptDrive(password_value, username_value)
+            if encrypt_error:
+                alert = NSAlert.alertWithMessageText_defaultButton_alternateButton_otherButton_informativeTextWithFormat_(
+                                                                                                                          NSLocalizedString(u"Something went wrong", None),
+                                                                                                                          NSLocalizedString(u"Aww, drat", None),
+                                                                                                                          objc.nil,
+                                                                                                                          objc.nil,
+                                                                                                                          NSLocalizedString(u"There was a problem with enabling encryption on your Mac. Please take sure your are using your short username and that your password is correct. Please contact IT Support if you need help.", None))
+                alert.beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_(
+                                                                                             self.window, self, enable_inputs(self), objc.nil)
+            if recovery_key:
                 ##submit this to the server fv_status['recovery_password']
                 theurl = serverURL+"/checkin/"
                 mydata=[('serial',serial),('recovery_password',recovery_key)]
@@ -99,12 +109,23 @@ class FVController(NSObject):
                     if hasattr(e, 'reason'):
                         print 'We failed to reach a server.'
                         print 'Reason: ', e.reason
-                        NSApp.terminate_(self)
+                        has_error = True
+                        #NSApp.terminate_(self)
                     elif hasattr(e, 'code'):
                         print 'The server couldn\'t fulfill the request'
                         print 'Error code: ', e.code
-                        NSApp.terminate_(self)
-    
+                        has_error = True
+                        #NSApp.terminate_(self)
+                        if has_error:
+                            alert = NSAlert.alertWithMessageText_defaultButton_alternateButton_otherButton_informativeTextWithFormat_(
+                                                                                                                                      NSLocalizedString(u"Something went wrong", None),
+                                                                                                                                      NSLocalizedString(u"Arse", None),
+                                                                                                                                      objc.nil,
+                                                                                                                                      objc.nil,
+                                                                                                                                      NSLocalizedString(u"We couldn't conact the server and save your key. In the future, the key will be stored on disk, but not yet.", None))
+                            alert.beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_(
+                                                                                                         self.window, self, objc.nil, objc.nil)
+                            
                 else:
                     ##need some code to read in the json response from the server, and if the deta matches, display success message, or failiure message, then reboot. If not, we need to cache it on disk somewhere - maybe pull it out with facter?
                     #time to turn on filevault

@@ -5,3 +5,5 @@ Build/FileVault_Client.pkg
 Webapp/fvserver/fvserver/settings.py
 *.pyc
 Webapp/fvserver/fvserver.db
+Build/Crypt_Client.pkg
+Build/Crypt.app
