@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FC4736BD16764EEC003D6F99 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FC4736BC16764EEC003D6F99 /* icon.png */; };
 		FC4736BF16764FD1003D6F99 /* Crypt.iconset in Resources */ = {isa = PBXBuildFile; fileRef = FC4736BE16764FD1003D6F99 /* Crypt.iconset */; };
 		FC4736C1167650D1003D6F99 /* Crypt.icns in Resources */ = {isa = PBXBuildFile; fileRef = FC4736C0167650D1003D6F99 /* Crypt.icns */; };
 		FC54DB6A1646E4FE00737F94 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC54DB691646E4FE00737F94 /* Cocoa.framework */; };
@@ -25,9 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		FC4736BC16764EEC003D6F99 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		FC4736BE16764FD1003D6F99 /* Crypt.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = Crypt.iconset; path = "Filevault Server/Crypt.iconset"; sourceTree = "<group>"; };
-		FC4736C0167650D1003D6F99 /* Crypt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Crypt.icns; path = "Filevault Server/Crypt.icns"; sourceTree = "<group>"; };
+		FC4736BE16764FD1003D6F99 /* Crypt.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = Crypt.iconset; path = Crypt/Crypt.iconset; sourceTree = "<group>"; };
+		FC4736C0167650D1003D6F99 /* Crypt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Crypt.icns; path = Crypt/Crypt.icns; sourceTree = "<group>"; };
 		FC54DB651646E4FE00737F94 /* FileVault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = FileVault.app; path = Crypt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC54DB691646E4FE00737F94 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		FC54DB6B1646E4FE00737F94 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
@@ -64,7 +62,6 @@
 		FC54DB5A1646E4FE00737F94 = {
 			isa = PBXGroup;
 			children = (
-				FC4736BC16764EEC003D6F99 /* icon.png */,
 				FC4736BE16764FD1003D6F99 /* Crypt.iconset */,
 				FC4736C0167650D1003D6F99 /* Crypt.icns */,
 				FC54DB711646E4FE00737F94 /* Crypt */,
@@ -111,8 +108,7 @@
 				FC54DB811646E4FE00737F94 /* MainMenu.xib */,
 				FC54DB721646E4FE00737F94 /* Supporting Files */,
 			);
-			name = Crypt;
-			path = "Filevault Server";
+			path = Crypt;
 			sourceTree = "<group>";
 		};
 		FC54DB721646E4FE00737F94 /* Supporting Files */ = {
@@ -145,7 +141,7 @@
 			dependencies = (
 			);
 			name = Crypt;
-			productName = "Filevault Server";
+			productName = Crypt;
 			productReference = FC54DB651646E4FE00737F94 /* FileVault.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -190,7 +186,6 @@
 				FCB1D283166CA4FD00F05315 /* FoundationPlist.py in Resources */,
 				FCDFCE89166CB9570077AF7E /* Padlock-icon.png in Resources */,
 				FCBBD165166CF3EF009BFC08 /* FVUtils.py in Resources */,
-				FC4736BD16764EEC003D6F99 /* icon.png in Resources */,
 				FC4736BF16764FD1003D6F99 /* Crypt.iconset in Resources */,
 				FC4736C1167650D1003D6F99 /* Crypt.icns in Resources */,
 			);
@@ -292,8 +287,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Filevault Server/Crypt-Prefix.pch";
-				INFOPLIST_FILE = "Filevault Server/Crypt-Info.plist";
+				GCC_PREFIX_HEADER = "Crypt/Crypt-Prefix.pch";
+				INFOPLIST_FILE = "Crypt/Crypt-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -304,8 +299,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Filevault Server/Crypt-Prefix.pch";
-				INFOPLIST_FILE = "Filevault Server/Crypt-Info.plist";
+				GCC_PREFIX_HEADER = "Crypt/Crypt-Prefix.pch";
+				INFOPLIST_FILE = "Crypt/Crypt-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
