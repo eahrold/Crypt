@@ -41,6 +41,14 @@ class FVController(NSObject):
     errorField = objc.IBOutlet()
     window = objc.IBOutlet()
     
+    def encryptDrive(self,password,username):
+        #time to turn on filevault
+        # we need to see if fdesetup is available, might as well use the built in methods in 10.8
+        the_command = "/usr/local/bin/csfde "+FVUtils.GetRootDisk()+" "+username+" "+password
+        proc = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+        fv_status = plistlib.readPlistFromString(proc)
+        return fv_status['recovery_password']
+    
     def startRun(self):
         if self.window:
             self.window.setCanBecomeVisibleWithoutLogin_(True)
@@ -76,17 +84,13 @@ class FVController(NSObject):
             self.userName.setEnabled_(False)
             self.password.setEnabled_(False)
             self.encryptButton.setEnabled_(False)
-            #time to turn on filevault
-            # we need to see if fdesetup is available, might as well use the built in methods in 10.8
-            the_command = "/usr/local/bin/csfde "+FVUtils.GetRootDisk()+" "+username_value+" "+password_value
-            proc = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
-            fv_status = plistlib.readPlistFromString(proc)
-            #NSLog(u"csfde results: %s" % fv_status)
             
+            #NSLog(u"csfde results: %s" % fv_status)
+            recovery_key = encryptDrive(password_value, username_value)
             if fv_status['error'] == False:
                 ##submit this to the server fv_status['recovery_password']
                 theurl = serverURL+"/checkin/"
-                mydata=[('serial',serial),('recovery_password',fv_status['recovery_password'])]
+                mydata=[('serial',serial),('recovery_password',recovery_key)]
                 mydata=urllib.urlencode(mydata)
                 req = Request(theurl, mydata)
                 try:

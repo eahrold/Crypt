@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FC54DB641646E4FE00737F94"
                BuildableName = "FileVault.app"
-               BlueprintName = "FileVault"
-               ReferencedContainer = "container:Filevault Server.xcodeproj">
+               BlueprintName = "Crypt"
+               ReferencedContainer = "container:Crypt.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,8 +34,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FC54DB641646E4FE00737F94"
             BuildableName = "FileVault.app"
-            BlueprintName = "FileVault"
-            ReferencedContainer = "container:Filevault Server.xcodeproj">
+            BlueprintName = "Crypt"
+            ReferencedContainer = "container:Crypt.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -53,8 +53,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FC54DB641646E4FE00737F94"
             BuildableName = "FileVault.app"
-            BlueprintName = "FileVault"
-            ReferencedContainer = "container:Filevault Server.xcodeproj">
+            BlueprintName = "Crypt"
+            ReferencedContainer = "container:Crypt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -71,8 +71,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FC54DB641646E4FE00737F94"
             BuildableName = "FileVault.app"
-            BlueprintName = "FileVault"
-            ReferencedContainer = "container:Filevault Server.xcodeproj">
+            BlueprintName = "Crypt"
+            ReferencedContainer = "container:Crypt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

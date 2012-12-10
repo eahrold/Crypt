@@ -22,16 +22,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		FC54DB651646E4FE00737F94 /* Filevault Server.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Filevault Server.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC54DB651646E4FE00737F94 /* FileVault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FileVault.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC54DB691646E4FE00737F94 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		FC54DB6B1646E4FE00737F94 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
 		FC54DB6E1646E4FE00737F94 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		FC54DB6F1646E4FE00737F94 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		FC54DB701646E4FE00737F94 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		FC54DB731646E4FE00737F94 /* Filevault Server-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Filevault Server-Info.plist"; sourceTree = "<group>"; };
+		FC54DB731646E4FE00737F94 /* Crypt-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Crypt-Info.plist"; sourceTree = "<group>"; };
 		FC54DB751646E4FE00737F94 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FC54DB771646E4FE00737F94 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		FC54DB791646E4FE00737F94 /* Filevault Server-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Filevault Server-Prefix.pch"; sourceTree = "<group>"; };
+		FC54DB791646E4FE00737F94 /* Crypt-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Crypt-Prefix.pch"; sourceTree = "<group>"; };
 		FC54DB7B1646E4FE00737F94 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		FC54DB7D1646E4FE00737F94 /* main.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = main.py; sourceTree = "<group>"; };
 		FC54DB7F1646E4FE00737F94 /* FVAppDelegate.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = FVAppDelegate.py; sourceTree = "<group>"; };
@@ -58,7 +58,7 @@
 		FC54DB5A1646E4FE00737F94 = {
 			isa = PBXGroup;
 			children = (
-				FC54DB711646E4FE00737F94 /* Filevault Server */,
+				FC54DB711646E4FE00737F94 /* Crypt */,
 				FC54DB681646E4FE00737F94 /* Frameworks */,
 				FC54DB661646E4FE00737F94 /* Products */,
 			);
@@ -67,7 +67,7 @@
 		FC54DB661646E4FE00737F94 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FC54DB651646E4FE00737F94 /* Filevault Server.app */,
+				FC54DB651646E4FE00737F94 /* FileVault.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,7 +92,7 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		FC54DB711646E4FE00737F94 /* Filevault Server */ = {
+		FC54DB711646E4FE00737F94 /* Crypt */ = {
 			isa = PBXGroup;
 			children = (
 				FC54DB7D1646E4FE00737F94 /* main.py */,
@@ -102,6 +102,7 @@
 				FC54DB811646E4FE00737F94 /* MainMenu.xib */,
 				FC54DB721646E4FE00737F94 /* Supporting Files */,
 			);
+			name = Crypt;
 			path = "Filevault Server";
 			sourceTree = "<group>";
 		};
@@ -110,10 +111,10 @@
 			children = (
 				FCDFCE88166CB9570077AF7E /* Padlock-icon.png */,
 				FCB1D282166CA4FD00F05315 /* FoundationPlist.py */,
-				FC54DB731646E4FE00737F94 /* Filevault Server-Info.plist */,
+				FC54DB731646E4FE00737F94 /* Crypt-Info.plist */,
 				FC54DB741646E4FE00737F94 /* InfoPlist.strings */,
 				FC54DB771646E4FE00737F94 /* main.m */,
-				FC54DB791646E4FE00737F94 /* Filevault Server-Prefix.pch */,
+				FC54DB791646E4FE00737F94 /* Crypt-Prefix.pch */,
 				FC54DB7A1646E4FE00737F94 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
@@ -122,9 +123,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FC54DB641646E4FE00737F94 /* FileVault */ = {
+		FC54DB641646E4FE00737F94 /* Crypt */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FC54DB861646E4FE00737F94 /* Build configuration list for PBXNativeTarget "FileVault" */;
+			buildConfigurationList = FC54DB861646E4FE00737F94 /* Build configuration list for PBXNativeTarget "Crypt" */;
 			buildPhases = (
 				FC54DB611646E4FE00737F94 /* Sources */,
 				FC54DB621646E4FE00737F94 /* Frameworks */,
@@ -134,9 +135,9 @@
 			);
 			dependencies = (
 			);
-			name = FileVault;
+			name = Crypt;
 			productName = "Filevault Server";
-			productReference = FC54DB651646E4FE00737F94 /* Filevault Server.app */;
+			productReference = FC54DB651646E4FE00737F94 /* FileVault.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -149,7 +150,7 @@
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Graham Gilbert";
 			};
-			buildConfigurationList = FC54DB5F1646E4FE00737F94 /* Build configuration list for PBXProject "Filevault Server" */;
+			buildConfigurationList = FC54DB5F1646E4FE00737F94 /* Build configuration list for PBXProject "Crypt" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -161,7 +162,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FC54DB641646E4FE00737F94 /* FileVault */,
+				FC54DB641646E4FE00737F94 /* Crypt */,
 			);
 		};
 /* End PBXProject section */
@@ -279,8 +280,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Filevault Server/Filevault Server-Prefix.pch";
-				INFOPLIST_FILE = "Filevault Server/Filevault Server-Info.plist";
+				GCC_PREFIX_HEADER = "Filevault Server/Crypt-Prefix.pch";
+				INFOPLIST_FILE = "Filevault Server/Crypt-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -291,8 +292,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Filevault Server/Filevault Server-Prefix.pch";
-				INFOPLIST_FILE = "Filevault Server/Filevault Server-Info.plist";
+				GCC_PREFIX_HEADER = "Filevault Server/Crypt-Prefix.pch";
+				INFOPLIST_FILE = "Filevault Server/Crypt-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -302,7 +303,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FC54DB5F1646E4FE00737F94 /* Build configuration list for PBXProject "Filevault Server" */ = {
+		FC54DB5F1646E4FE00737F94 /* Build configuration list for PBXProject "Crypt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FC54DB841646E4FE00737F94 /* Debug */,
@@ -311,7 +312,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FC54DB861646E4FE00737F94 /* Build configuration list for PBXNativeTarget "FileVault" */ = {
+		FC54DB861646E4FE00737F94 /* Build configuration list for PBXNativeTarget "Crypt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FC54DB871646E4FE00737F94 /* Debug */,
