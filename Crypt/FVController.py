@@ -89,6 +89,10 @@ class FVController(NSObject):
             #NSLog(u"csfde results: %s" % fv_status)
             recovery_key, encrypt_error = FVUtils.encryptDrive(password_value, username_value)
             if encrypt_error:
+                NSLog(u"%s" % encrypt_error)
+                ##write the key to a plist
+                ##load a launch daemon - touch a file maybe?
+                ##submit the key
                 alert = NSAlert.alertWithMessageText_defaultButton_alternateButton_otherButton_informativeTextWithFormat_(
                                                                                                                           NSLocalizedString(u"Something went wrong", None),
                                                                                                                           NSLocalizedString(u"Aww, drat", None),
@@ -98,37 +102,4 @@ class FVController(NSObject):
                 alert.beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_(
                                                                                              self.window, self, enable_inputs(self), objc.nil)
             if recovery_key:
-                ##submit this to the server fv_status['recovery_password']
-                theurl = serverURL+"/checkin/"
-                mydata=[('serial',serial),('recovery_password',recovery_key)]
-                mydata=urllib.urlencode(mydata)
-                req = Request(theurl, mydata)
-                try:
-                    response = urlopen(req)
-                except URLError, e:
-                    if hasattr(e, 'reason'):
-                        print 'We failed to reach a server.'
-                        print 'Reason: ', e.reason
-                        has_error = True
-                        #NSApp.terminate_(self)
-                    elif hasattr(e, 'code'):
-                        print 'The server couldn\'t fulfill the request'
-                        print 'Error code: ', e.code
-                        has_error = True
-                        #NSApp.terminate_(self)
-                        if has_error:
-                            alert = NSAlert.alertWithMessageText_defaultButton_alternateButton_otherButton_informativeTextWithFormat_(
-                                                                                                                                      NSLocalizedString(u"Something went wrong", None),
-                                                                                                                                      NSLocalizedString(u"Arse", None),
-                                                                                                                                      objc.nil,
-                                                                                                                                      objc.nil,
-                                                                                                                                      NSLocalizedString(u"We couldn't conact the server and save your key. In the future, the key will be stored on disk, but not yet.", None))
-                            alert.beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_(
-                                                                                                         self.window, self, objc.nil, objc.nil)
-                            
-                else:
-                    ##need some code to read in the json response from the server, and if the deta matches, display success message, or failiure message, then reboot. If not, we need to cache it on disk somewhere - maybe pull it out with facter?
-                    #time to turn on filevault
-                    #NSLog(u"%s" % fvprefs['ServerURL'])
-                    the_command = "/sbin/reboot"
-                    reboot = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+                FVUtils.escrowKey(recovery_key, 'initial')

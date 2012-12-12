@@ -1,0 +1,24 @@
+#!/usr/bin/python
+import sys
+import os
+#let's import the code that's already in the app
+currentDir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(currentDir+'/Crypt.app/Contents/Resources')
+
+import FVUtils
+import FoundationPlist
+
+thePlist = '/usr/local/crypt/recovery_key.plist'
+
+if not os.path.exists(thePlist):
+    print "file doesnt exist"
+    sys.exit(0)
+
+##read in the plist
+
+recoveryData = FoundationPlist.readPlist(thePlist)
+recoveryKey = recoveryData['recovery_key']
+
+##escrow the key
+
+escrow = FVUtils.escrowKey(recoveryKey, "delayed")
