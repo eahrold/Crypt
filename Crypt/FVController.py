@@ -102,4 +102,4 @@ class FVController(NSObject):
                 alert.beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_(
                                                                                              self.window, self, enable_inputs(self), objc.nil)
             if recovery_key:
-                FVUtils.escrowKey(recovery_key, 'initial')
+                FVUtils.escrowKey(recovery_key, username_value, 'initial')

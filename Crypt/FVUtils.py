@@ -118,12 +118,11 @@ def encryptDrive(password,username):
                     NSLog(u"couldn't get boot disk")
             #the_disk = FVUtils.GetRootDisk()
             NSLog(u"%s" % the_disk)
-            #the_command = "/usr/local/bin/csfde "+FVUtils.GetRootDisk()+" "+username+" "+password
-            p = subprocess.Popen(['/usr/local/bin/csfde',the_disk, username, password], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
-            stdout_data = p.communicate()[0]
+            the_command = "/usr/local/bin/csfde "+the_disk+" "+username+" "+password
+            stdout_data = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
             fv_status = plistlib.readPlistFromString(stdout_data)
-            NSLog(u"%s" % fv_status)
-            return fv_status['recovery_password']
+            NSLog(u"%s" % fv_status['recovery_password'])
+            return fv_status['recovery_password'], the_error
         except:
             return fv_status, "Couldn't enable FilveVault on 10.7"
 
@@ -136,11 +135,11 @@ def internet_on():
     NSLog(u"Server is not accessible")
     return False
 
-def escrowKey(key, runtype):
+def escrowKey(key, username, runtype):
     ##submit this to the server fv_status['recovery_password']
     theurl = pref('ServerURL')+"/checkin/"
     serial = GetMacSerial()
-    mydata=[('serial',serial),('recovery_password',key)]
+    mydata=[('serial',serial),('recovery_password',key),('username',username)]
     mydata=urllib.urlencode(mydata)
     req = Request(theurl, mydata)
     try:
@@ -159,7 +158,10 @@ def escrowKey(key, runtype):
             if has_error:
                 plistData = {}
                 plistData['recovery_key']=key
+                plistData['username']=username
+                
                 FoundationPlist.writePlist(plistData, '/usr/local/crypt/recovery_key.plist')
+                os.chmod('/usr/local/crypt/recovery_key.plist',0700)
                 if runtype=="initial":
                     the_command = "/sbin/reboot"
                     reboot = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]

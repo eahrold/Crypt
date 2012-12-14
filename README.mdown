@@ -1,21 +1,22 @@
 #Crypt
-Crypt is a system for centrally storing FilveVault 2 recovery keys. It is made up of a client app, and a Django web app for storing the keys.
+Crypt is a system for centrally storing FilveVault 2 recovery keys. It is made up of a client app, and a Django web app for storing the keys. You will also need to [download and install the webapp](https://github.com/grahamgilbert/Crypt-Server).
 
 ##Client
-The client is written in Pyobjc, and makes use of Google's csfde from Cauliflower Vest to handle the actual encryption. An example login hook is (will) be provided to see how this could be implemented in your organisation.
+The client is written in Pyobjc, and makes use of Google's csfde from Cauliflower Vest to handle the actual encryption on OS X 10.7 and the built in fdesetup on OS X 10.8. An example login hook is provided to see how this could be implemented in your organisation. 
+
+###Features
+- If escrow fails for some reason, the recovery key is stored on disk and a Launch Daemon will attempt to escrow the key periodically.
+- If the app cannot contact the server, it will quit
 
 ###Todo
 - Output to the window from csfde
-- Check for server reachability
-- Nicer error handling
-	- Authentication failiure
-	- Unable to contact server
-- Store the output to disk in case of failiure to escrow
+- Check if encyption is already enabled - if it is, the app should quit.
 - Facter facts for encryption enabled and if escrow failed
 - Logging!
 
+###Installation
+- Install the [package](https://github.com/grahamgilbert/Crypt/raw/master/Build/Crypt_Client.pkg) 
+- Install the [Django webapp](https://github.com/grahamgilbert/Crypt-Server)
+
 ###Configuration
 ``sudo defaults write /Library/Preferences/FVServer ServerURL "http://yourserver.com"``
-
-##Web app
-###Installation instructions

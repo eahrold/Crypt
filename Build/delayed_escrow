@@ -18,7 +18,8 @@ if not os.path.exists(thePlist):
 
 recoveryData = FoundationPlist.readPlist(thePlist)
 recoveryKey = recoveryData['recovery_key']
+userName = recoveryData['username']
 
 ##escrow the key
 
-escrow = FVUtils.escrowKey(recoveryKey, "delayed")
+escrow = FVUtils.escrowKey(recoveryKey, userName, "delayed")

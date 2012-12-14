@@ -3,6 +3,8 @@ include /usr/local/share/luggage/luggage.make
 TITLE=Crypt_Client
 PACKAGE_NAME=Crypt_Client
 REVERSE_DOMAIN=com.grahamgilbert
+PACKAGE_TARGET_OS=10.5
+PLIST_FLAVOR=pkg-info
 PAYLOAD=\
 			pack-csfde \
 			pack-crypt \
