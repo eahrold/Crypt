@@ -1,6 +1,8 @@
 #Crypt
 Crypt is a system for centrally storing FilveVault 2 recovery keys. It is made up of a client app, and a Django web app for storing the keys. You will also need to [download and install the webapp](https://github.com/grahamgilbert/Crypt-Server).
 
+__It is not considered production quality code yet as it has not undergone extensive testing. Please use with caution.__
+
 ##Client
 The client is written in Pyobjc, and makes use of Google's csfde from Cauliflower Vest to handle the actual encryption on OS X 10.7 and the built in fdesetup on OS X 10.8. An example login hook is provided to see how this could be implemented in your organisation. 
 
