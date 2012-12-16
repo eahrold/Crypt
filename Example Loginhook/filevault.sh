@@ -62,17 +62,17 @@ main() {
     exit 1
   fi
 
-  if [[ ${BINARY_EXIT} == 0 ]]; then
-    echo "Crypt needs to reboot to begin encryption." >&2
-    echo "Rebooting..." >&2
+  #if [[ ${BINARY_EXIT} == 0 ]]; then
+  #  echo "Crypt needs to reboot to begin encryption." >&2
+  #  echo "Rebooting..." >&2
 
-    for i in 0 20 40 60 80 100; do
-      echo "%${i}"
-      sleep 1
-    done
+#    for i in 0 20 40 60 80 100; do
+#      echo "%${i}"
+#      sleep 1
+#    done
 
-    /sbin/shutdown -r now
-  fi
+#    /sbin/shutdown -r now
+#  fi
 
   # Here, we've either already bailed out, or failed, soooo...
   echo "Crypt couldn't encrypt your disk."
