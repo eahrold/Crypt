@@ -22,3 +22,6 @@ The client is written in Pyobjc, and makes use of Google's csfde from Cauliflowe
 
 ###Configuration
 ``sudo defaults write /Library/Preferences/FVServer ServerURL "http://yourserver.com"``
+
+##Acknowledgements
+Many thanks for my lovely employers at [pebble.it](http://pebbleit.com) for letting me release this, thanks to Google for releasing [csfde](http://code.google.com/p/cauliflowervest/), and thanks to Greg Neagle and the other contributors at [Munki](http://code.google.com/p/munki/) for having code that I could borrow.
