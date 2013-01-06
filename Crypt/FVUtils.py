@@ -40,7 +40,11 @@ def GetMacSerial():
     return serial
 
 
-#def GetRootDisk():
+def GetMacName():
+    theprocess = "scutil --get ComputerName"
+    thename = subprocess.Popen(theprocess,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+    thename = oldname.strip()
+    return thename
 
 
 
@@ -139,7 +143,8 @@ def escrowKey(key, username, runtype):
     ##submit this to the server fv_status['recovery_password']
     theurl = pref('ServerURL')+"/checkin/"
     serial = GetMacSerial()
-    mydata=[('serial',serial),('recovery_password',key),('username',username)]
+    macname = GetMacName()
+    mydata=[('serial',serial),('recovery_password',key),('username',username),('macname',macname)]
     mydata=urllib.urlencode(mydata)
     req = Request(theurl, mydata)
     try:
