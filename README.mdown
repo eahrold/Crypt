@@ -10,6 +10,9 @@ The client is written in Pyobjc, and makes use of Google's csfde from Cauliflowe
 - If escrow fails for some reason, the recovery key is stored on disk and a Launch Daemon will attempt to escrow the key periodically.
 - If the app cannot contact the server, it will quit
 
+###Screenshot
+![Crypt Screenshot](https://raw.github.com/grahamgilbert/Crypt/master/Screenshot.png)
+
 ###Todo
 - Output to the window from csfde
 - Check if encyption is already enabled - if it is, the app should quit.
