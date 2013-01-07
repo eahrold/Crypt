@@ -26,7 +26,7 @@
 /* Begin PBXFileReference section */
 		FC4736BE16764FD1003D6F99 /* Crypt.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; name = Crypt.iconset; path = Crypt/Crypt.iconset; sourceTree = "<group>"; };
 		FC4736C0167650D1003D6F99 /* Crypt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = Crypt.icns; path = Crypt/Crypt.icns; sourceTree = "<group>"; };
-		FC54DB651646E4FE00737F94 /* FileVault.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = FileVault.app; path = Crypt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC54DB651646E4FE00737F94 /* Crypt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crypt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC54DB691646E4FE00737F94 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		FC54DB6B1646E4FE00737F94 /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
 		FC54DB6E1646E4FE00737F94 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -73,7 +73,7 @@
 		FC54DB661646E4FE00737F94 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FC54DB651646E4FE00737F94 /* FileVault.app */,
+				FC54DB651646E4FE00737F94 /* Crypt.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,7 +142,7 @@
 			);
 			name = Crypt;
 			productName = Crypt;
-			productReference = FC54DB651646E4FE00737F94 /* FileVault.app */;
+			productReference = FC54DB651646E4FE00737F94 /* Crypt.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
