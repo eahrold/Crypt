@@ -43,7 +43,7 @@ def GetMacSerial():
 def GetMacName():
     theprocess = "scutil --get ComputerName"
     thename = subprocess.Popen(theprocess,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
-    thename = oldname.strip()
+    thename = thename.strip()
     return thename
 
 
