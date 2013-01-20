@@ -1260,7 +1260,7 @@
 						<object class="NSTextField" id="375131777">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{92, 323}, {349, 17}}</string>
+							<string key="NSFrame">{{92, 323}, {354, 17}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="736751597"/>
@@ -1269,7 +1269,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="1022428054">
 								<int key="NSCellFlags">68157504</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">Your organisation requires that your Mac is encrypted.</string>
+								<string key="NSContents">Your organization requires that your Mac be encrypted.</string>
 								<reference key="NSSupport" ref="541922549"/>
 								<string key="NSCellIdentifier">_NS:1535</string>
 								<reference key="NSControlView" ref="375131777"/>
@@ -1308,6 +1308,7 @@
 							<string key="NSFrame">{{426, 13}, {87, 32}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="1050213805">
@@ -1347,6 +1348,7 @@
 							<string key="NSFrame">{{20, 68}, {273, 193}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSImageCell" key="NSCell" id="634063370">
