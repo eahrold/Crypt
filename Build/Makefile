@@ -9,6 +9,8 @@ PAYLOAD=\
 			pack-csfde \
 			pack-crypt \
 			pack-Library-LaunchDaemons-com.grahamgilbert.crypt.needsescrow.plist
+			pack-Library-LaunchDaemons-com.aapps.crypt.launcher.plist
+			
 
 pack-csfde: l_usr_local_bin
 		@sudo ${CP} csfde ${WORK_D}/usr/local/bin/csfde

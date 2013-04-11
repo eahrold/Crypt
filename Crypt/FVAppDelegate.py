@@ -35,3 +35,6 @@ class FVAppDelegate(NSObject):
             NSApp.disableRelaunchOnLogin()
         if not FVUtils.internet_on():
             NSApp.terminate_(self)
+        if not FVUtils.root_user():
+            NSApp.terminate_(self)
+
