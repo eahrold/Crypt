@@ -139,6 +139,17 @@ def internet_on():
     NSLog(u"Server is not accessible")
     return False
 
+def root_user():
+    if os.geteuid() == 0:
+        NSLog(u"is root user continuing...")
+        return True
+    else:
+        NSLog(u"not root user")
+        cryptdir="/tmp/crypt-launcher/"
+        the_command = "[[ -d "+cryptdir+" ]] && `touch "+cryptdir+"/launch ; echo 'nothing'; rm -r "+cryptdir+"` || `mkdir "+cryptdir+" ; rm -r "+cryptdir+"`"
+        relaunch = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+        return False
+
 def escrowKey(key, username, runtype):
     ##submit this to the server fv_status['recovery_password']
     theurl = pref('ServerURL')+"/checkin/"
