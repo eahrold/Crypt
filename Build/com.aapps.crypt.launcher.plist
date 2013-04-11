@@ -3,7 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
+<<<<<<< HEAD
 	<string>com.aapps.crypt.launcher</string>
+=======
+	<string>com.aapps.crypt-launcher</string>
+>>>>>>> 55c96dc0fab9d6f1d6bf5f0cfcec17d73296e254
 	<key>ProgramArguments</key>
 	<array>
 		<string>/usr/local/crypt/Crypt.app/Contents/MacOS/Crypt</string>
