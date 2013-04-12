@@ -49,8 +49,8 @@ class FVController(NSObject):
             self.window.setCanBecomeVisibleWithoutLogin_(True)
             self.window.setLevel_(NSScreenSaverWindowLevel - 1)
             self.window.center()
-    
-    
+         
+            
     @objc.IBAction
     def encrypt_(self,sender):
         fvprefspath = "/Library/Preferences/FVServer.plist"
@@ -74,32 +74,36 @@ class FVController(NSObject):
             self.userName.setEnabled_(True)
             self.password.setEnabled_(True)
             self.encryptButton.setEnabled_(True)
-    
-        if username_value == "" or password_value == "":
-            self.errorField.setStringValue_("You need to enter your username and password")
-            self.userName.setEnabled_(True)
-            self.password.setEnabled_(True)
-            self.encryptButton.setEnabled_(True)
-
-        if username_value != "" and password_value !="":
-            self.userName.setEnabled_(False)
-            self.password.setEnabled_(False)
-            self.encryptButton.setEnabled_(False)
             
-            #NSLog(u"csfde results: %s" % fv_status)
-            recovery_key, encrypt_error = FVUtils.encryptDrive(password_value, username_value)
-            if encrypt_error:
-                NSLog(u"%s" % encrypt_error)
-                ##write the key to a plist
-                ##load a launch daemon - touch a file maybe?
-                ##submit the key
-                alert = NSAlert.alertWithMessageText_defaultButton_alternateButton_otherButton_informativeTextWithFormat_(
-                                                                                                                          NSLocalizedString(u"Something went wrong", None),
-                                                                                                                          NSLocalizedString(u"Aww, drat", None),
-                                                                                                                          objc.nil,
-                                                                                                                          objc.nil,
-                                                                                                                          NSLocalizedString(u"There was a problem with enabling encryption on your Mac. Please take sure your are using your short username and that your password is correct. Please contact IT Support if you need help.", None))
-                alert.beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_(
-                                                                                             self.window, self, enable_inputs(self), objc.nil)
-            if recovery_key:
-                FVUtils.escrowKey(recovery_key, username_value, 'initial')
+        if FVUtils.driveIsEncrypted():
+            self.errorField.setStringValue_("Your Drive is Already Encrypted")
+            self.encryptButton.setEnabled_(True)
+        else:       
+            if username_value == "" or password_value == "":
+                self.errorField.setStringValue_("You need to enter your username and password")
+                self.userName.setEnabled_(True)
+                self.password.setEnabled_(True)
+                self.encryptButton.setEnabled_(True)
+
+            if username_value != "" and password_value !="":
+                self.userName.setEnabled_(False)
+                self.password.setEnabled_(False)
+                self.encryptButton.setEnabled_(False)
+                
+                #NSLog(u"csfde results: %s" % fv_status)
+                recovery_key, encrypt_error = FVUtils.encryptDrive(password_value, username_value)
+                if encrypt_error:
+                    NSLog(u"%s" % encrypt_error)
+                    ##write the key to a plist
+                    ##load a launch daemon - touch a file maybe?
+                    ##submit the key
+                    alert = NSAlert.alertWithMessageText_defaultButton_alternateButton_otherButton_informativeTextWithFormat_(
+                                                                                                                              NSLocalizedString(u"Something went wrong", None),
+                                                                                                                              NSLocalizedString(u"Aww, drat", None),
+                                                                                                                              objc.nil,
+                                                                                                                              objc.nil,
+                                                                                                                              NSLocalizedString(u"There was a problem with enabling encryption on your Mac. Please take sure your are using your short username and that your password is correct. Please contact IT Support if you need help.", None))
+                    alert.beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_(
+                                                                                                 self.window, self, enable_inputs(self), objc.nil)
+                if recovery_key:
+                    FVUtils.escrowKey(recovery_key, username_value, 'initial')

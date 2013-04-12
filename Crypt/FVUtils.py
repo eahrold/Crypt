@@ -26,10 +26,16 @@ import subprocess
 import FoundationPlist
 from Foundation import *
 from urllib2 import Request, urlopen, URLError, HTTPError
+from xml.parsers import expat
 import urllib
 
 # our preferences "bundle_id"
 BUNDLE_ID = 'FVServer'
+
+# paths to common executables
+fdesetupExec='/usr/bin/fdesetup'
+diskutilExec = '/usr/sbin/diskutil'
+csfdeExec = '/usr/local/bin/csfde'
 
 def GetMacSerial():
     """Returns the serial number for the Mac
@@ -93,22 +99,22 @@ def encryptDrive(password,username):
     # we need to see if fdesetup is available, might as well use the built in methods in 10.8
     the_error = ""
     fv_status = ""
-    if os.path.exists('/usr/bin/fdesetup'):
+    if os.path.exists(fdesetupExec):
         ##build plist
         the_settings = {}
         the_settings['Username'] = username
         the_settings['Password'] = password
         input_plist = plistlib.writePlistToString(the_settings)
         try:
-            p = subprocess.Popen(['/usr/bin/fdesetup','enable','-outputplist', '-inputplist'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = subprocess.Popen([fdesetupExec,'enable','-outputplist', '-inputplist'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout_data = p.communicate(input=input_plist)[0]
             NSLog(u"%s" % stdout_data)
             fv_status = plistlib.readPlistFromString(stdout_data)
             return fv_status['RecoveryKey'], the_error
         except:
             return fv_status, "Couldn't enable FileVault on 10.8"
-            
-    if not os.path.exists('/usr/bin/fdesetup'):
+
+    if not os.path.exists(fdesetupExec):
         try:
             the_command = "/sbin/mount"
             stdout = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
@@ -122,13 +128,40 @@ def encryptDrive(password,username):
                     NSLog(u"couldn't get boot disk")
             #the_disk = FVUtils.GetRootDisk()
             NSLog(u"%s" % the_disk)
-            the_command = "/usr/local/bin/csfde "+the_disk+" "+username+" "+password
-            stdout_data = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+            stdout_data = subprocess.Popen([csfdeExec,the_disk,username,password], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
             fv_status = plistlib.readPlistFromString(stdout_data)
             NSLog(u"%s" % fv_status['recovery_password'])
             return fv_status['recovery_password'], the_error
         except:
             return fv_status, "Couldn't enable FilveVault on 10.7"
+
+def driveIsEncrypted():
+    NSLog(u"Checking on FileVault Status")
+    if os.path.exists(fdesetupExec):
+        try:
+            fv_status = subprocess.Popen([fdesetupExec,'status'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+            if re.match(r'FileVault is On.|Encryption in progress:',fv_status):
+                NSLog(u"FileVault Is Already Enabled")
+                return True
+            else:
+                NSLog(u"FileVault Not Enabled")
+                return False
+        except expat.ExpatError as e:
+            return False
+    
+    if not os.path.exists(fdesetupExec):
+        try:
+            fv_status = plistlib.readPlistFromString(subprocess.Popen([diskutilExec,'cs','info','-plist','/'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]).get('CoreStorageLogicalVolumeConversionState')
+            if re.match(r'Complete|Converting',fv_status):
+                NSLog(u"FileVault Is Already Enabled")
+                return True
+            else:
+                NSLog(u"FileVault Not Enabled")
+                return False
+        except expat.ExpatError as e:
+            return False
+
+
 
 def internet_on():
     try:
@@ -141,13 +174,12 @@ def internet_on():
 
 def root_user():
     if os.geteuid() == 0:
-        NSLog(u"is root user continuing...")
         return True
     else:
-        NSLog(u"not root user")
-        cryptdir="/tmp/crypt-launcher/"
-        the_command = "[[ -d "+cryptdir+" ]] && `touch "+cryptdir+"/launch ; echo 'nothing'; rm -r "+cryptdir+"` || `mkdir "+cryptdir+" ; rm -r "+cryptdir+"`"
-        relaunch = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+        NSLog(u"Crypt Needs to run as root, relaunching...")
+        launch_file="/usr/local/crypt/watch/launch"
+        open(launch_file, 'w').close()
+        os.remove(launch_file)
         return False
 
 def escrowKey(key, username, runtype):
