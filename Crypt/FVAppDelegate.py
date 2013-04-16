@@ -38,6 +38,10 @@ class FVAppDelegate(NSObject):
             NSApp.disableRelaunchOnLogin()
         if not FVUtils.internet_on():
             NSApp.terminate_(self)
+
+
+    def awakeFromNib(self):
         if not FVUtils.root_user():
             NSApp.terminate_(self)
-
+        if FVUtils.driveIsEncrypted(self):
+            return True

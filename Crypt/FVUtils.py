@@ -28,6 +28,7 @@ from Foundation import *
 from urllib2 import Request, urlopen, URLError, HTTPError
 from xml.parsers import expat
 import urllib
+import FVAlerts
 
 # our preferences "bundle_id"
 BUNDLE_ID = 'FVServer'
@@ -135,31 +136,61 @@ def encryptDrive(password,username):
         except:
             return fv_status, "Couldn't enable FilveVault on 10.7"
 
-def driveIsEncrypted():
+def driveIsEncrypted(self):
     NSLog(u"Checking on FileVault Status")
     if os.path.exists(fdesetupExec):
         try:
             fv_status = subprocess.Popen([fdesetupExec,'status'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
-            if re.match(r'FileVault is On.|Encryption in progress:',fv_status):
-                NSLog(u"FileVault Is Already Enabled")
+            if re.match(r'FileVault is On.|Encryption in progress:*',fv_status):
+                FVAlerts.quit_if_encrypted(self)
+                return True
+            elif re.match(r'Decryption in progress:|FileVault is Off, but needs to be restarted to finish.',fv_status):
+                FVAlerts.quit_if_decrypting(self)
                 return True
             else:
-                NSLog(u"FileVault Not Enabled")
+                NSLog(u"FileVault Not Enabled, launching Crypt")
                 return False
         except expat.ExpatError as e:
             return False
-    
-    if not os.path.exists(fdesetupExec):
+
+    elif os.path.exists(diskutilExec):
         try:
-            fv_status = plistlib.readPlistFromString(subprocess.Popen([diskutilExec,'cs','info','-plist','/'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]).get('CoreStorageLogicalVolumeConversionState')
-            if re.match(r'Complete|Converting',fv_status):
-                NSLog(u"FileVault Is Already Enabled")
+            lv_family = plistlib.readPlistFromString(subprocess.Popen([diskutilExec,'cs','info','-plist','/'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]).get('MemberOfCoreStorageLogicalVolumeFamily')
+           
+            the_command=diskutilExec+" cs list "+lv_family
+            stdout = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+            for line in stdout.splitlines():
+                try:
+                    FVproperty, FVstatus= line.split(':', 2)
+                    if re.search(r'Conversion Status', FVproperty):
+                        lvf_status = FVstatus
+                    elif re.search(r'Conversion Direction', FVproperty):
+                        lvf_direction = FVstatus
+                    elif re.search(r'Fully Secure', FVproperty):
+                        lvf_secure = FVstatus
+                except:
+                    NSLog(u"something went wrong!")
+
+   
+            if re.search(r'Yes',lvf_secure):
+                FVAlerts.quit_if_encrypted(self)
                 return True
-            else:
-                NSLog(u"FileVault Not Enabled")
-                return False
+            elif re.search(r'No',lvf_secure):
+                if re.search(r'Converting',lvf_status):
+                    NSLog(u"Drive is Currenlty in the process of Converting....")
+
+                    if re.search(r'forward',lvf_direction):
+                        FVAlerts.quit_if_encrypted(self)
+                        return True
+                        
+                    elif re.search(r'backward',lvf_direction):
+                        FVAlerts.quit_if_decrypting(self)
+                        return True
+                else:
+                    NSLog(u"FileVault Not Enabled, launching Crypt")
+                    return False                    
         except expat.ExpatError as e:
-            return False
+            print False
 
 
 
@@ -211,9 +242,7 @@ def escrowKey(key, username, runtype):
                 FoundationPlist.writePlist(plistData, '/usr/local/crypt/recovery_key.plist')
                 os.chmod('/usr/local/crypt/recovery_key.plist',0700)
                 if runtype=="initial":
-                    the_command = "/sbin/reboot"
-                    reboot = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
-    
+                    os.system('reboot now')
     else:
         ##need some code to read in the json response from the server, and if the deta matches, display success message, or failiure message, then reboot. If not, we need to cache it on disk somewhere - maybe pull it out with facter?
         #time to turn on filevault
@@ -224,5 +253,4 @@ def escrowKey(key, username, runtype):
         if os.path.exists(thePlist):
             os.remove(thePlist)
         if runtype=="initial":
-            the_command = "/sbin/reboot"
-            reboot = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+            os.system('reboot now')
