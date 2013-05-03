@@ -45,4 +45,13 @@ def quit_if_decrypting(self):
     alert.runModal()
     NSApp.terminate_(self)
 
+def crypt_error(self,encrypt_error):
+    NSLog(u"%s" % encrypt_error)
+    alert = NSAlert.alertWithMessageText_defaultButton_alternateButton_otherButton_informativeTextWithFormat_(
+                                                                                                              NSLocalizedString(u"Something went wrong", None),
+                                                                                                              NSLocalizedString(u"Aww, drat", None),
+                                                                                                              objc.nil,
+                                                                                                              objc.nil,
+                                                                                                              NSLocalizedString(u"There was a problem with enabling encryption on your Mac. Please take sure your are using your short username and that your password is correct. Please contact IT Support if you need help.", None))
+    alert.beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_(self.window, self, enable_inputs(self), objc.nil)
 

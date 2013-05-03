@@ -34,7 +34,7 @@ import FVAlerts
 BUNDLE_ID = 'FVServer'
 
 # paths to common executables
-fdesetupExec='/usr/bin/fdesetup'
+fdesetupExec='/usr/bin/fdesetup2'
 diskutilExec = '/usr/sbin/diskutil'
 csfdeExec = '/usr/local/bin/csfde'
 
@@ -159,9 +159,12 @@ def driveIsEncrypted(self):
            
             the_command=diskutilExec+" cs list "+lv_family
             stdout = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
+            FVproperty=''
+            FVstatus=''
             for line in stdout.splitlines():
                 try:
-                    FVproperty, FVstatus= line.split(':', 2)
+                    try:FVproperty, FVstatus = line.split(':', 2)
+                    except:pass
                     if re.search(r'Conversion Status', FVproperty):
                         lvf_status = FVstatus
                     elif re.search(r'Conversion Direction', FVproperty):
@@ -242,7 +245,8 @@ def escrowKey(key, username, runtype):
                 FoundationPlist.writePlist(plistData, '/usr/local/crypt/recovery_key.plist')
                 os.chmod('/usr/local/crypt/recovery_key.plist',0700)
                 if runtype=="initial":
-                    os.system('reboot now')
+                    the_command = "/sbin/reboot"
+            reboot = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
     else:
         ##need some code to read in the json response from the server, and if the deta matches, display success message, or failiure message, then reboot. If not, we need to cache it on disk somewhere - maybe pull it out with facter?
         #time to turn on filevault
@@ -253,4 +257,5 @@ def escrowKey(key, username, runtype):
         if os.path.exists(thePlist):
             os.remove(thePlist)
         if runtype=="initial":
-            os.system('reboot now')
+            the_command = "/sbin/reboot"
+            reboot = subprocess.Popen(the_command,shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0]
